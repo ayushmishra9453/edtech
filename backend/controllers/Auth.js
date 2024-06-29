@@ -178,7 +178,7 @@ return res.status(401).json({
   const payload={
     email:user.email,
     id:user._id,
-    role:user.role
+    accountType:user.accountType
   }
   const token=jwt.sign(payload,process.env.JWT_SECRET,{
     expiersIn:"2h"
@@ -217,6 +217,6 @@ catch(error){
 
 // change password
 
-exports.changePassword=async(req,res)=>{
+// exports.changePassword=async(req,res)=>{
 
-}
+// }
