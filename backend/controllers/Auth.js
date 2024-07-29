@@ -39,7 +39,7 @@ exports.sendOTP = async (req, res) => {
         specialChars: false,
       });
       result = await OTP.findOne({ otp: otp });
-
+    }
       const otpPayload = { email, otp };
       //  create an entry in db
       const otpBody = await OTP.create(otpPayload);
@@ -51,7 +51,7 @@ exports.sendOTP = async (req, res) => {
         message: "OTP send Successfully",
         otp,
       });
-    }
+    
   } catch (error) {
     console.log("otp generation error", error);
     res.status(500).json({

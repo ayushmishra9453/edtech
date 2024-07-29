@@ -1,5 +1,5 @@
 const Course = require("../model/Course");
-const Tag = require("../model/Tag");
+const Category = require("../model/Category");
 const User = require("../model/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
@@ -8,7 +8,7 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 exports.createCourse = async (req, res) => {
   try {
     //  data fetch
-    const { courseName, courseDescription, whatYouWillLearn, price, tag } =
+    const { courseName, courseDescription, whatYouWillLearn, price, Category } =
       req.body;
     // file fetch
     const thumbnail = req.files.thumbnailImage;
@@ -19,7 +19,7 @@ exports.createCourse = async (req, res) => {
       !courseDescription ||
       !whatYouWillLearn ||
       !price ||
-      !tag ||
+      !Category ||
       !thumbnail
     ) {
       return res.status(400).json({
@@ -38,12 +38,12 @@ exports.createCourse = async (req, res) => {
         message: "Instructor Details not found",
       });
     }
-    // check  given tag is valid or not
-    const tagDetails = await Tag.findById(tag);
-    if (!tagDetails) {
+    // check  given Category is valid or not
+    const CategoryDetails = await Category.findById(Category);
+    if (!CategoryDetails) {
       return res.status(404).json({
         success: false,
-        message: "Tag Details not found",
+        message: "Category Details not found",
       });
     }
     // upload image top cloudinary
@@ -58,7 +58,7 @@ exports.createCourse = async (req, res) => {
       instructor: instructorDetails._id,
       whatYouWillLearn: whatYouWillLearn,
       price,
-      tag: tagDetails._id,
+      Category: CategoryDetails._id,
       thumbnail: thumbnailImage.secure_url,
     });
     // add the new course to the user schema of the instructor
@@ -73,7 +73,7 @@ exports.createCourse = async (req, res) => {
       },
       { new: true }
     );
-    // update the tag schema
+    // update the Category schema
 
     // return response
     return res.status(200).json({
