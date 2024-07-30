@@ -118,3 +118,45 @@ exports.showAllCourses=async(req,res)=>{
         })
     }
 }
+
+// get course details
+
+exports.getCourseDetails=async(req,res)=>{
+  try{
+  //  fetch id
+  const {courseId}=req.id;
+  // find course details
+  const courseDetails=await Course.find({_id:courseId})
+  .populate(
+    {
+    path:"instructor",
+    .populate:{
+      path:"additionalDetails",
+    }
+  })
+  .populate("category")
+  .populate("ratingAndReview")
+  .populate({
+    path:"courseContent",
+    .populate:"subSection"
+  }).exec();
+
+  if(!courseDetails){
+    return res.status(400).json({
+      success:false,
+      message:error.message
+     })
+  }
+
+  return res.status(200).json({
+    success:true,
+    message:"Course Details fetched successfully"
+   })
+  }
+  catch(error){
+   return res.status(400).json({
+    success:false,
+    message:error.message
+   })
+  }
+}
