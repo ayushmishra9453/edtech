@@ -217,6 +217,69 @@ catch(error){
 
 // change password
 
-// exports.changePassword=async(req,res)=>{
+exports.changePassword=async(req,res)=>{
+  try{
+  //  get user data from req.user
+  const userDetails=await User.findById({
+    _id:req.user.id
+  })
 
-// }
+  // get oldPassword, newPassword and ConfirmNewPassword from req.body
+
+  const {oldPassword,newPassword,confirmPassword}=req.body;
+
+  // validate oldPassword
+  const isPasswordMatch=await bcrypt.compare(
+    oldPassword,
+    userDetails.password
+  )
+  if(!isPasswordMatch){
+     // If old password does not match, return a 401 (Unauthorized) error
+     return res
+     .status(401)
+     .json({ success: false, message: "The password is incorrect" })
+  }
+
+  // updatePassword
+  const encryptedPassword=await bcrypt.hash(newPassword,10);
+  const updateUserDetails=await User.findByIdAndUpdate(
+    req.user.id,
+    {password:encryptedPassword},
+    {new:true}
+  )
+
+  // send notification mail
+  try{
+   const emailResponse=await mailSender(
+    updateUserDetails.email,
+    "Password for your account has been updated",
+    passwordUpdated(
+      updateUserDetails.email,
+      `Password updated successfully for ${updateUserDetails.firstName} and ${updateUserDetails.lastName}`
+    )
+   )
+   console.log("Email sent successfully:", emailResponse.response)
+  }catch(error){
+   // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
+   console.error("Error occurred while sending email:", error)
+   return res.status(500).json({
+     success: false,
+     message: "Error occurred while sending email",
+     error: error.message,
+   })
+  }
+   // Return success response
+   return res
+   .status(200)
+   .json({ success: true, message: "Password updated successfully" })
+  }
+  catch(error){
+    // If there's an error updating the password, log the error and return a 500 (Internal Server Error) error
+    console.error("Error occurred while updating password:", error)
+    return res.status(500).json({
+      success: false,
+      message: "Error occurred while updating password",
+      error: error.message,
+    })
+  }
+}
