@@ -3,7 +3,7 @@ const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
 
 // resetPassword Token
-exports.ressetPasswordToken = async (req, res) => {
+exports.resetPasswordToken = async (req, res) => {
   try {
     const { email } = req.body;
     //    check user for this email and validation

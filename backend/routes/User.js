@@ -3,8 +3,8 @@ const router=express.Router();
 
 const {
     login,
-    signup,
-    sendotp,
+    signUp,
+    sendOTP,
     changePassword
 }=require("../controllers/Auth")
 
@@ -25,11 +25,11 @@ const {auth}=require("../middlewares/auth")
 router.post("/login",login);
 
 // route for user signup
-router.post("/signup",signup)
+router.post("/signup",signUp)
 
 // route for sending otp
 
-router.post("/sendotp",sendotp)
+router.post("/sendotp",sendOTP)
 
 // route for changing password
 router.post("/changepassword",auth,changePassword);

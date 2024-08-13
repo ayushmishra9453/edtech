@@ -2,12 +2,12 @@ const {instance}=require('../config/razorpay');
 const Course=require('../model/Course')
 const User=require('../model/User')
 const mailSender=require('../utils/mailSender')
-const {courseEnrollmentEmail}=require('../mail/template/courseEnrollmentEmail');
+const {courseEnrollmentEmail}=require('../mail/templates/courseEnrollmentEmail');
 const mongoose = require('mongoose');
 
 // capture the payment and initiate the razorpay order
 
-exports.capturePayments=async(req,res)=>{
+exports.capturePayment=async(req,res)=>{
     try{
     // get course id and user id
     const {course_id}=req.body;
@@ -79,7 +79,7 @@ exports.capturePayments=async(req,res)=>{
 }
 
 // verify signature of razorpay and server
-exports.verifySignature=async(req,res)=>{
+exports.verifyPayment=async(req,res)=>{
     const webhookSecret="12345678";
     const signature=req.headers["x-razorpay-signature"];
 

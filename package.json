@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "cloudinary": "^2.2.0",
-    "cors": "^2.8.5",
-    "razorpay": "^2.9.4"
-  }
-}

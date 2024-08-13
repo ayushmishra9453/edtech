@@ -33,4 +33,4 @@ async function sendVerificationMail(email,otp){
 OTPSchema.pre("save",async function(next){
     await sendVerificationMail(this.email,this.otp);
 })
-module.exports=mongoose.model("OTP", otpSchema);
+module.exports=mongoose.model("OTP", OTPSchema);

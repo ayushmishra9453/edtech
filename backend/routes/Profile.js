@@ -6,7 +6,10 @@ const {auth,isInstructor}=require("../middlewares/auth")
 const {
     updateProfile,
     deleteAccount,
-    getAllUserDetails
+    getAllUserDetails,
+    getEnrolledCourses,
+    instructorDashboard,
+    updateDisplayPictures
 }=require("../controllers/Profile");
 
 // ********************************************************************************************************
@@ -15,10 +18,10 @@ const {
 // Delet User Account
 router.delete("deleteProfile",auth,deleteAccount);
 router.put("/updateProfile",updateProfile)
-router.get("/getUserDetails",getUserDetails);
+router.get("/getUserDetails",getAllUserDetails);
 // Get Enrolled Courses
 router.get("/getEnrolledCourses", auth, getEnrolledCourses)
-router.put("/updateDisplayPicture", auth, updateDisplayPicture)
+router.put("/updateDisplayPicture", auth, updateDisplayPictures)
 router.get("/instructorDashboard", auth, isInstructor, instructorDashboard)
 
 module.exports = router
